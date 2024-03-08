@@ -13,7 +13,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.schema.document import Document
 from langchain.memory.buffer import ConversationBufferMemory
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from api_request import k8s_request, wr_request
+from api_request import k8s_request, wr_request, openstack_request
 from openai import OpenAI
 from constants import CLIENT_ERROR_MSG, LOG
 
@@ -21,8 +21,8 @@ from constants import CLIENT_ERROR_MSG, LOG
 def initiate_sessions():
     global sessions
     sessions = {}
-    global node_list
-    node_list = create_instance_list()
+    # global node_list
+    # node_list = create_instance_list()
 
 
 def get_session(session_id):
@@ -162,108 +162,112 @@ def is_api_key_valid(key):
     return True
 
 
-def define_api_pool(query, session):
-    # Use LLM to decide if Kubernetes or Wind River API pool should be used.
-    complete_query = f"Based on the following query you will choose between Wind River APIs and Kubernetes APIs. You will not provide that specific API, only inform if it is a Wind River or a Kubernetes API. Make sure that your response only contains the name Wind River or the name Kubernetes and nothing else.\n\nUser query: {query}"
+# def define_api_pool(query, session):
+#     # Use LLM to decide if Kubernetes or Wind River API pool should be used.
+#     complete_query = f"Based on the following query you will choose between Wind River APIs and Kubernetes APIs. You will not provide that specific API, only inform if it is a Wind River or a Kubernetes API. Make sure that your response only contains the name Wind River or the name Kubernetes and nothing else.\n\nUser query: {query}"
 
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are an AI connected to a Wind River system and based on the user query you will define which set of APIs is best to retrieve the necessary information to answer the question."),
-        ("user", "{input}")
-    ])
+#     prompt = ChatPromptTemplate.from_messages([
+#         ("system", "You are an AI connected to a Wind River system and based on the user query you will define which set of APIs is best to retrieve the necessary information to answer the question."),
+#         ("user", "{input}")
+#     ])
 
-    output_parser = StrOutputParser()
-    chain = prompt | session["llm"] | output_parser
-    response = chain.invoke({"input": complete_query})
+#     output_parser = StrOutputParser()
+#     chain = prompt | session["llm"] | output_parser
+#     response = chain.invoke({"input": complete_query})
 
-    print(f"###########{response}")
-    if response.lower() == "kubernetes":
-        return "Kubernetes"
-    elif response.lower() == "wind river":
-        return "Wind River"
-    else:
-        return "Undefined"
+#     print(f"###########{response}")
+#     if response.lower() == "kubernetes":
+#         return "Kubernetes"
+#     elif response.lower() == "wind river":
+#         return "Wind River"
+#     else:
+#         return "Undefined"
 
 
 def api_response(query, session):
-    instance = define_system(query)
-    print(f'Query being made to {instance["name"]}', file=sys.stderr)
-    LOG.info(f'Query being made to {instance["name"]}')
+    # instance = define_system(query)
+    # print(f'Query being made to {instance["name"]}', file=sys.stderr)
+    # LOG.info(f'Query being made to {instance["name"]}')
 
-    print('Defining API pool', file=sys.stderr)
-    LOG.info('Defining API pool')
-    pool = define_api_pool(query, session)
+    # print('Defining API pool', file=sys.stderr)
+    # LOG.info('Defining API pool')
+    # pool = define_api_pool(query, session)
+    pool = "OpenStack"
     print(f'LLM defined {pool} as the API subject', file=sys.stderr)
     LOG.info(f'LLM defined {pool} as the API subject')
-    if pool == "Kubernetes":
-        bot = k8s_request(query, OPENAI_API_KEY, instance)
-        response = k8s_request.get_API_response(bot)
-    elif pool == "Wind River":
-        bot = wr_request(query, OPENAI_API_KEY, instance)
-        response = wr_request.get_API_response(bot)
+    # if pool == "Kubernetes":
+    #     bot = k8s_request(query, OPENAI_API_KEY, instance)
+    #     response = k8s_request.get_API_response(bot)
+    # elif pool == "Wind River":
+    #     bot = wr_request(query, OPENAI_API_KEY, instance)
+    #     response = wr_request.get_API_response(bot)
+    if pool == "OpenStack":
+        bot = openstack_request(query, OPENAI_API_KEY)
+        response = openstack_request.get_API_response(bot)
     else:
         response = CLIENT_ERROR_MSG
 
     return response
 
 
-def define_system(query):
-    # Initiate OpenAI
-    client = OpenAI(api_key=OPENAI_API_KEY)
+# def define_system(query):
+#     # Initiate OpenAI
+#     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    # Expected llm response format
-    format_response = "name: <name>"
+#     # Expected llm response format
+#     format_response = "name: <name>"
 
-    # Create prompt
-    system_prompt = f"You are a system that choses a node in a Distributed Cloud environment. Your job is to define which of the instances given in the context, the user is asking about."
-    user_prompt = f"Make sure that only 1 is given in your response, the answer will never be more than 1 instance. If the user did not specified which instance he wants the information, you will provide the information of the instance that contains central cloud as type.\nYour answer will follow the format: {format_response}. Make sure this format is followed and nothing else is given in the your response."
-
-
-    #Get completion
-    completion = client.chat.completions.create(
-            model="gpt-4-turbo-preview",
-            temperature=0.5,
-            messages=[{"role": "system", "content": system_prompt},
-                      {"role": "user", "content": f"List of available instances: {node_list}\nUser query: {query}\n\n{user_prompt}"}]
-        )
-
-    print(f'Completion: {completion.choices[0].message.content}', file=sys.stderr)
-    name = completion.choices[0].message.content.split(":")[1].strip().replace(".", "")
-    print(f'Result after normalization: {name}', file=sys.stderr)
-    node_dict = {}
-
-    # Iterate over each key-value pair
-    for node in node_list:
-        if node['name'] == name:
-            node_dict = node
-    return node_dict
+#     # Create prompt
+#     system_prompt = f"You are a system that choses a node in a Distributed Cloud environment. Your job is to define which of the instances given in the context, the user is asking about."
+#     user_prompt = f"Make sure that only 1 is given in your response, the answer will never be more than 1 instance. If the user did not specified which instance he wants the information, you will provide the information of the instance that contains central cloud as type.\nYour answer will follow the format: {format_response}. Make sure this format is followed and nothing else is given in the your response."
 
 
-def create_instance_list():
-    # Create list
-    instance_list = []
+#     #Get completion
+#     completion = client.chat.completions.create(
+#             model="gpt-4-turbo-preview",
+#             temperature=0.5,
+#             messages=[{"role": "system", "content": system_prompt},
+#                       {"role": "user", "content": f"List of available instances: {node_list}\nUser query: {query}\n\n{user_prompt}"}]
+#         )
 
-    # Add the system controller as first item on the list
-    controller = {"name":"System Controller",
-                  "URL":os.environ['OAM_IP'],
-                  "type":"central cloud",
-                  "token":os.environ['TOKEN']}
-    instance_list.append(controller)
+#     print(f'Completion: {completion.choices[0].message.content}', file=sys.stderr)
+#     name = completion.choices[0].message.content.split(":")[1].strip().replace(".", "")
+#     print(f'Result after normalization: {name}', file=sys.stderr)
+#     node_dict = {}
 
-    try:
-        # Load subclouds information
-        with open("src/subclouds.json", "r") as f:
-            data = json.load(f)
+#     # Iterate over each key-value pair
+#     for node in node_list:
+#         if node['name'] == name:
+#             node_dict = node
+#     return node_dict
 
-        for item in data:
-            new_subcloud = {
-            "name": item["name"],
-            "URL": item["URL"],
-            "type": "subcloud",
-            "token": item["k8s_token"]
-            }
 
-            instance_list.append(new_subcloud)
-    except:
-        LOG.warning("No subcloud information was added to the list of instances")
+# def create_instance_list():
+#     # Create list
+#     instance_list = []
 
-    return instance_list
+#     # Add the system controller as first item on the list
+#     controller = {"name":"System Controller",
+#                   "URL":os.environ['OAM_IP'],
+#                   "type":"central cloud",
+#                   "token":os.environ['TOKEN']}
+#     instance_list.append(controller)
+
+#     try:
+#         # Load subclouds information
+#         with open("src/subclouds.json", "r") as f:
+#             data = json.load(f)
+
+#         for item in data:
+#             new_subcloud = {
+#             "name": item["name"],
+#             "URL": item["URL"],
+#             "type": "subcloud",
+#             "token": item["k8s_token"]
+#             }
+
+#             instance_list.append(new_subcloud)
+#     except:
+#         LOG.warning("No subcloud information was added to the list of instances")
+
+#     return instance_list
