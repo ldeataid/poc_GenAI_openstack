@@ -59,7 +59,8 @@ Since OpenAI API is not free, you may need to pay before using the API key.
 Now that you made all the necessary configuration, to execute the chatbot run:
 
 ```shell
-cd $HOME/poc_GenAI
-source venv/bin/activate
+cd $HOME/poc_GenAI; \
+source venv/bin/activate; \
+source <openstack-openrc-file>; \
 python3 src/main.py
 ```
