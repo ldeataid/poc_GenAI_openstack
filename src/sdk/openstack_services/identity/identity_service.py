@@ -17,6 +17,7 @@ class IdentityService:
     
     def __init__(self, conn: Connection):
         sdk_conn = conn
+
         self.credentials = Credentials(sdk_conn)
         self.domains = Domains(sdk_conn)
         self.endpoints = Endpoints(sdk_conn)
