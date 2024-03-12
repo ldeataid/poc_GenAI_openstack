@@ -8,3 +8,6 @@ test.py
 .idea/
 
 __pycache__/
+
+clouds.yaml
+*.log
