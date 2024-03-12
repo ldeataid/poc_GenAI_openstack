@@ -1,6 +1,8 @@
 import os, sys
 import logging
 import openstack
+from openstack_services.identity.identity_service import IdentityService
+from openstack_services.compute.compute_service import ComputeService
 
 
 LOG = logging.getLogger("openstacksdk")
@@ -11,18 +13,24 @@ class OpenstackSdk:
         self.create_logger()
         self.confirm_required_variables_defined()
         
+        # Enable SDK debug
         try:
             openstack.enable_logging(debug=os.environ["SDK_DEBUG"])
         except KeyError:
             LOG.info("Variable SDK_DEBUG is not defined. Skipping SDK logging config")
-        
+
+        # Connect to the Openstack Cloud
         try:
             openstack_cloud_name = os.environ["OS_CLOUD_NAME"] 
             LOG.info(f"Trying to connect to Openstack cloud '{openstack_cloud_name}'")
-            self.sdk_conn = openstack.connect(cloud=openstack_cloud_name)
+            sdk_conn = openstack.connect(cloud=openstack_cloud_name)
             LOG.info(f"Successfully connected to Openstack cloud '{openstack_cloud_name}'")
         except Exception as e:
             LOG.error("Something went wrong when trying to connect to the Openstack cloud: %s", repr(e))
+
+        # Define all services
+        self.IDENTITY = IdentityService(sdk_conn)
+        self.COMPUTE = ComputeService(sdk_conn)
 
 
     def create_logger(self, loglevel=logging.INFO):
@@ -54,11 +62,7 @@ class OpenstackSdk:
                 sys.exit(1)
 
 
-    def test(self):
-        for service in self.sdk_conn.identity.services():
-            print(service)
-
-
 if __name__ == "__main__":
     sdk = OpenstackSdk()
-    sdk.test()
+    teste = 'sdk.COMPUTE.servers.show("test-vm")'
+    print(eval(teste))
