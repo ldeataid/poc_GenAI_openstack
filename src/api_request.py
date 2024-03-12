@@ -7,6 +7,7 @@ import requests
 import re
 import os
 
+
 class openstack_request():
 
     def __init__(self, user_query, key):
@@ -97,7 +98,6 @@ class openstack_request():
             error = f"Error trying to make API request:\n {response.status_code}, {response.text}"
             LOG.warning(error)
             return error
-
 
 
     def get_token(self):
