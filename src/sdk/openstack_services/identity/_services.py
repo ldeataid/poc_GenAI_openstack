@@ -9,15 +9,15 @@ class Services:
     def __init__(self, conn: Connection):
         self.sdk_conn = conn
 
-    
+
     def list(self):
         LOG.debug("Trying to fetch services")
         return self.sdk_conn.identity.services()
 
     
-    def show(self, service_name):
-        if not service_name:
-            raise AttributeError("Required attribute 'service_name' was not defined")
+    def show(self, service_id):
+        if not service_id:
+            raise AttributeError("Required attribute 'service_id' was not defined")
 
-        LOG.debug(f"Trying to find '{service_name}' service")
-        return self.sdk_conn.identity.find_service(service_name)
+        LOG.debug(f"Trying to find '{service_id}' service")
+        return self.sdk_conn.identity.find_service(service_id)
