@@ -11,3 +11,4 @@ __pycache__/
 
 clouds.yaml
 *.log
+*openrc
