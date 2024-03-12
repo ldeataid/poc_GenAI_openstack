@@ -1,104 +1,14 @@
 {
-    "APIs": [
+    "Functions": [
         {
-            "url": "/v2.1/servers",
-            "service": "NOVA",
-            "action": "List servers"
+            "path": "IDENTITY.services.list",
+            "parameters": "",
+            "action": "List services"
         },
         {
-            "url": "/v2.1/flavors",
-            "service": "NOVA",
-            "action": "List flavors"
-        },
-        {
-            "url": "/v2.1/os-keypairs",
-            "service": "NOVA",
-            "action": "List keypairs"
-        },
-        {
-            "url": "/v2.1/os-availability-zone",
-            "service": "MOVA",
-            "action": "Get availability zone information"
-        },
-        {
-            "url": "/v2.1/os-hypervisors",
-            "service": "NOVA",
-            "action": "List hypervisors"
-        },
-        {
-            "url": "/v2.1/os-services",
-            "service": "NOVA",
-            "action": "List compute services"
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
-        },
-        {
-            "url": "",
-            "service": "",
-            "action": ""
+            "path": "IDENTITY.services.show",
+            "parameters": "service_name",
+            "action": "Show a specific service"
         }
     ]
 }
