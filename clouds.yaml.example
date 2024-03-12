@@ -1,9 +1,0 @@
-clouds:
-  <YOUR CLOUD NAME>:
-    auth:
-      auth_url: <YOUR KEYSTONE AUTH URL>
-      password: <USER'S PASSWORD>
-      project_domain_name: <THE PROJECT DOMAIN>
-      project_name: <THE PROJECT NAME>
-      user_domain_name: <THE USER DOMAIN NAME>
-      username: <YOUR USER. SHOULD BE AT LEAST AN READ-ONLY TO ALL>
