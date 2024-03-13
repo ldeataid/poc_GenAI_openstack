@@ -2,6 +2,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from constants import LOG
+from sdk.sdk import OpenstackSdk
+import re, json
 
 
 class openstack_request():
@@ -17,6 +19,12 @@ class openstack_request():
         # List of OpenStack functions
         self.apis = self.load_openstack_functions()
 
+        # Load Openstack SDK
+        self.openstack_sdk = OpenstackSdk()
+
+        # Load enabled Openstack services in the cluster
+        self.enabled_openstack_services = self.openstack_sdk.enabled_services
+
 
     def load_openstack_functions(self):
         with open ("os_functions.json", "r") as f:
@@ -27,7 +35,7 @@ class openstack_request():
 
     def get_path(self):
         completion = self.get_path_completion()
-        path = "sdk." + completion
+        path = "self.openstack_sdk." + completion
 
         return path
 
@@ -62,9 +70,15 @@ class openstack_request():
         path = self.self.get_path()
 
         try:
-            response = eval(path)
-            str_response = f"OpenStack API response = {response.text}"
-            return str_response
+            service = re.findall(r'[A-Z][A-Z\d]+', path)[0]
+            if service.lower() in self.enabled_openstack_services:
+                response = eval(path)
+                str_response = f"OpenStack API response = {json.dumps(response)}"
+                return str_response
+
+            msg = f"Service {service} is not available in this cluster"
+            LOG.warn(msg)
+            return msg
         except Exception as e:
             error = f"An error ocurred while trying to retrieve the information, please rewrite the question and try again.\n Error: {e}"
             LOG.warning(error)

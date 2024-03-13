@@ -36,6 +36,7 @@ class OpenstackSdk:
 
         # Load all available Openstack services
         self.openstack_services_mixin(sdk_conn)
+        self.enabled_services = self.list_active_openstack_services()
 
 
     def create_logger(self, loglevel=logging.INFO):
@@ -76,6 +77,16 @@ class OpenstackSdk:
         self.STORAGE = StorageService(sdk_conn)
 
 
+    def list_active_openstack_services(self):
+        sdk_services_response = self.IDENTITY.services.list()
+        active_services = []
+        for service in sdk_services_response:
+            if service.is_enabled:
+                active_services.append(service.name)
+        return active_services
+
+
+# For testing purposes, run this file directly
 if __name__ == "__main__":
     sdk = OpenstackSdk()
     teste = 'sdk.COMPUTE.servers.show("test-vm")'
