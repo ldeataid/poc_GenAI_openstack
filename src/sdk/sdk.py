@@ -76,15 +76,15 @@ class OpenstackSdk:
 
     def openstack_services_mixin(self, sdk_conn: Connection):
         self.BAREMETAL = BaremetalService(sdk_conn)
-        self.COMPUTE = ComputeService(sdk_conn)
-        self.IDENTITY = IdentityService(sdk_conn)
-        self.IMAGE = ImageService(sdk_conn)
-        self.NETWORK = NetworkService(sdk_conn)
-        self.STORAGE = StorageService(sdk_conn)
+        self.NOVA = ComputeService(sdk_conn)
+        self.KEYSTONE = IdentityService(sdk_conn)
+        self.GLANCE = ImageService(sdk_conn)
+        self.NEUTRON = NetworkService(sdk_conn)
+        self.CINDERV3 = StorageService(sdk_conn)
 
 
     def list_active_openstack_services(self):
-        sdk_services_response = self.IDENTITY.services.list()
+        sdk_services_response = self.KEYSTONE.services.list()
         active_services = []
         for service in sdk_services_response:
             if service.is_enabled:
