@@ -11,7 +11,7 @@ class Services:
 
     
     def list(self):
-        LOG.debug("Trying to fetch services")
+        LOG.debug("Trying to fetch compute services")
         return self.sdk_conn.compute.services()
 
     
