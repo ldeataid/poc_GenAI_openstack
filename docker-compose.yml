@@ -8,11 +8,10 @@ services:
     network_mode: host
     environment:
       OPENAI_API_KEY: ${openai_key}
-      OAM_IP: ${oam_ip}
-      WR_USER: ${user}
-      WR_PASSWORD: ${password}
-      TOKEN: ${k8s_token}
-      OS_IP: ${}
-      OS_USER: ${}
+      OS_CLOUD_NAME: ${}
+      OS_AUTH_URL: ${}
+      OS_USERNAME: ${}
       OS_PASSWORD: ${}
-      OS_DOMAIN_NAME: ${}
+      OS_PROJECT_DOMAIN_NAME: ${}
+      OS_PROJECT_NAME: ${}
+      OS_USER_DOMAIN_NAME: ${}

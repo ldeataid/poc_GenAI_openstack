@@ -1,0 +1,14 @@
+{
+    "Functions": [
+        {
+            "path": "IDENTITY.services.list",
+            "parameters": "",
+            "action": "List all services"
+        },
+        {
+            "path": "IDENTITY.services.show",
+            "parameters": "service_name",
+            "action": "Show details of a specific service"
+        }
+    ]
+}

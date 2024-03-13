@@ -8,7 +8,7 @@ WORKDIR /app
 RUN mkdir src
 
 # Copy the requirements file into the container
-COPY requirements/requirements.txt .
+COPY ./requirements.txt .
 
 # Install the Python dependencies
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
@@ -19,7 +19,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY ./src/* ./
 
 # Specify the command to run when the container starts
-CMD ["python", "server.py", "run"]
+CMD ["python", "main.py"]
 
 # Expose the port that the server will be listening to
 EXPOSE 2000
