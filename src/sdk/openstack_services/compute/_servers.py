@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -9,10 +10,11 @@ class Servers:
     def __init__(self, conn: Connection):
         self.sdk_conn = conn
 
-    
+
     def list(self):
         LOG.debug("Trying to fetch servers")
-        return self.sdk_conn.compute.servers()
+        response = self.sdk_conn.compute.servers()
+        return json.dumps(list(response))
 
     
     def show(self, server_id):
@@ -20,7 +22,8 @@ class Servers:
             raise AttributeError("Required attribute 'server_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_id}' server")
-        return self.sdk_conn.compute.find_server(server_id)
+        response = self.sdk_conn.compute.find_server(server_id)
+        return json.dumps(response)
 
 
     def show_metadata(self, server_id):
@@ -28,4 +31,5 @@ class Servers:
             raise AttributeError("Required attribute 'server_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_id}' server")
-        return self.sdk_conn.compute.get_server_metadata(server_id)
+        response = self.sdk_conn.compute.get_server_metadata(server_id)
+        return json.dumps(response)

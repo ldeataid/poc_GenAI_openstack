@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -9,10 +10,11 @@ class ServerGroups:
     def __init__(self, conn: Connection):
         self.sdk_conn = conn
 
-    
+
     def list(self):
         LOG.debug("Trying to fetch server_groups")
-        return self.sdk_conn.compute.server_groups()
+        response = self.sdk_conn.compute.server_groups()
+        return json.dumps(list(response))
 
     
     def show(self, server_group_id):
@@ -20,4 +22,5 @@ class ServerGroups:
             raise AttributeError("Required attribute 'server_group_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_group_id}' server group")
-        return self.sdk_conn.compute.find_server_group(server_group_id)
+        response = self.sdk_conn.compute.find_server_group(server_group_id)
+        return json.dumps(response)

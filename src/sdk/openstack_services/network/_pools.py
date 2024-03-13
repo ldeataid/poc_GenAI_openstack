@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Pools:
 
     def list(self):
         LOG.debug("Trying to fetch pools")
-        return self.sdk_conn.network.pools()
+        response = self.sdk_conn.network.pools()
+        return json.dumps(list(response))
 
     
     def show(self, pool_id):
@@ -20,4 +22,5 @@ class Pools:
             raise AttributeError("Required attribute 'pool_id' was not defined")
 
         LOG.debug(f"Trying to find '{pool_id}' pool")
-        return self.sdk_conn.network.find_pool(pool_id)
+        response = self.sdk_conn.network.find_pool(pool_id)
+        return json.dumps(response)

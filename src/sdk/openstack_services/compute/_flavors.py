@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -9,10 +10,11 @@ class Flavors:
     def __init__(self, conn: Connection):
         self.sdk_conn = conn
 
-    
+
     def list(self):
         LOG.debug("Trying to fetch flavors")
-        return self.sdk_conn.compute.flavors()
+        response = self.sdk_conn.compute.flavors()
+        return json.dumps(list(response))
 
 
     def show(self, flavor_id):
@@ -20,7 +22,8 @@ class Flavors:
             raise AttributeError("Required attribute 'flavor_id' was not defined")
 
         LOG.debug(f"Trying to find '{flavor_id}' flavor")
-        return self.sdk_conn.compute.find_flavor(flavor_id)
+        response = self.sdk_conn.compute.find_flavor(flavor_id)
+        return json.dumps(response)
 
 
     def show_extra_specs(self, flavor_id):
@@ -28,7 +31,8 @@ class Flavors:
             raise AttributeError("Required attribute 'flavor_id' was not defined")
 
         LOG.debug(f"Trying to find '{flavor_id}' flavor's extra specs")
-        return self.sdk_conn.compute.fetch_flavor_extra_specs(flavor_id)
+        response = self.sdk_conn.compute.fetch_flavor_extra_specs(flavor_id)
+        return json.dumps(list(response))
 
 
     def show_access(self, flavor_id):
@@ -36,4 +40,5 @@ class Flavors:
             raise AttributeError("Required attribute 'flavor_id' was not defined")
 
         LOG.debug(f"Trying to find users who have access to flavor '{flavor_id}'")
-        return self.sdk_conn.compute.get_flavor_access(flavor_id)
+        response = self.sdk_conn.compute.get_flavor_access(flavor_id)
+        return json.dumps(list(response))

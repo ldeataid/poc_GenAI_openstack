@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -9,10 +10,11 @@ class Keypairs:
     def __init__(self, conn: Connection):
         self.sdk_conn = conn
 
-    
+
     def list(self):
         LOG.debug("Trying to fetch keypairs")
-        return self.sdk_conn.compute.keypairs()
+        response = self.sdk_conn.compute.keypairs()
+        return json.dumps(list(response))
 
     
     def show(self, keypair_id):
@@ -20,4 +22,5 @@ class Keypairs:
             raise AttributeError("Required attribute 'keypair_id' was not defined")
 
         LOG.debug(f"Trying to find '{keypair_id}' keypair")
-        return self.sdk_conn.compute.find_keypair(keypair_id)
+        response = self.sdk_conn.compute.find_keypair(keypair_id)
+        return json.dumps(response)

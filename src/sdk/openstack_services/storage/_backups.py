@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Backups:
 
     def list(self):
         LOG.debug("Trying to fetch backups")
-        return self.sdk_conn.block_storage.backups()
+        response = self.sdk_conn.block_storage.backups()
+        return json.dumps(list(response))
 
     
     def show(self, backup_id):
@@ -20,4 +22,5 @@ class Backups:
             raise AttributeError("Required attribute 'backup_id' was not defined")
 
         LOG.debug(f"Trying to find '{backup_id}' backup")
-        return self.sdk_conn.block_storage.find_backup(backup_id)
+        response = self.sdk_conn.block_storage.find_backup(backup_id)
+        return json.dumps(response)

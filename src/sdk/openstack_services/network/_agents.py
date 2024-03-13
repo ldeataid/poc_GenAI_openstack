@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Agents:
 
     def list(self):
         LOG.debug("Trying to fetch network agents")
-        return self.sdk_conn.network.agents()
+        response = self.sdk_conn.network.agents()
+        return json.dumps(list(response))
 
     
     def show(self, agent_id):
@@ -20,4 +22,5 @@ class Agents:
             raise AttributeError("Required attribute 'agent_id' was not defined")
 
         LOG.debug(f"Trying to find '{agent_id}' network agent")
-        return self.sdk_conn.network.get_agent(agent_id)
+        response = self.sdk_conn.network.get_agent(agent_id)
+        return json.dumps(response)

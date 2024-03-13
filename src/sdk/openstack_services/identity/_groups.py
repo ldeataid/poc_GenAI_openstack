@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Groups:
 
     def list(self):
         LOG.debug("Trying to fetch groups")
-        return self.sdk_conn.identity.groups()
+        response = self.sdk_conn.identity.groups()
+        return json.dumps(list(response))
 
     
     def show(self, group_id):
@@ -20,7 +22,8 @@ class Groups:
             raise AttributeError("Required attribute 'group_id' was not defined")
 
         LOG.debug(f"Trying to find '{group_id}' group")
-        return self.sdk_conn.identity.find_group(group_id)
+        response = self.sdk_conn.identity.find_group(group_id)
+        return json.dumps(response)
 
 
     def list_users_in_group(self, group_id):
@@ -28,7 +31,8 @@ class Groups:
             raise AttributeError("Required attribute 'group_id' was not defined")
 
         LOG.debug(f"Trying to find users in '{group_id}' group")
-        return self.sdk_conn.identity.group_users(group_id)
+        response = self.sdk_conn.identity.group_users(group_id)
+        return json.dumps(list(response))
 
 
     def check_user_in_group(self, group_id, user_id):
@@ -39,4 +43,5 @@ class Groups:
             raise AttributeError("Required attribute 'user_id' was not defined")
 
         LOG.debug(f"Trying to find user '{user_id}' in '{group_id}' group")
-        return self.sdk_conn.identity.check_user_in_group(user_id, group_id)
+        response = self.sdk_conn.identity.check_user_in_group(user_id, group_id)
+        return json.dumps(response)
