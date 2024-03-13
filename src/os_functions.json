@@ -3,12 +3,12 @@
         {
             "path": "IDENTITY.services.list",
             "parameters": "",
-            "action": "List services"
+            "action": "List all services"
         },
         {
             "path": "IDENTITY.services.show",
             "parameters": "service_name",
-            "action": "Show a specific service"
+            "action": "Show details of a specific service"
         }
     ]
 }

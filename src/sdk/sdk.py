@@ -18,7 +18,7 @@ class OpenstackSdk:
     def __init__(self):
         self.create_logger()
         self.confirm_required_variables_defined()
-        
+
         # Enable SDK debug
         try:
             openstack.enable_logging(debug=os.environ["SDK_DEBUG"])

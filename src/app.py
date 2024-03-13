@@ -11,7 +11,7 @@ from langchain.memory.buffer import ConversationBufferMemory
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from api_request import openstack_request
 from openai import OpenAI
-from constants import CLIENT_ERROR_MSG, LOG
+from constants import LOG
 
 
 def initiate_sessions():
@@ -149,14 +149,9 @@ def is_api_key_valid(key):
     return True
 
 
-def api_response(query, session):
-    pool = "OpenStack"
-    print(f'LLM defined {pool} as the API subject', file=sys.stderr)
-    LOG.info(f'LLM defined {pool} as the API subject')
-    if pool == "OpenStack":
-        bot = openstack_request(query, OPENAI_API_KEY)
-        response = openstack_request.get_API_response(bot)
-    else:
-        response = CLIENT_ERROR_MSG
+def api_response(query):
+
+    bot = openstack_request(query, OPENAI_API_KEY)
+    response = openstack_request.get_API_response(bot)
 
     return response
