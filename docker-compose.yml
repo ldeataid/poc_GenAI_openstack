@@ -1,5 +1,15 @@
 version: '3.7'
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - bridged_net
   poc_genAI:
     image: <image_name>:<tag_name>
     container_name: openstack-chatbot-be
@@ -15,3 +25,6 @@ services:
       OS_PROJECT_DOMAIN_NAME: ${}
       OS_PROJECT_NAME: ${}
       OS_USER_DOMAIN_NAME: ${}
+networks:
+  bridged_net:
+    driver: bridge
