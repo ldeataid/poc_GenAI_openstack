@@ -21,7 +21,8 @@ class OpenstackSdk:
 
         # Enable SDK debug
         try:
-            openstack.enable_logging(debug=os.environ["SDK_DEBUG"])
+            if os.environ["SDK_DEBUG"].lower() == "true":
+                openstack.enable_logging(debug=True)
         except KeyError:
             LOG.info("Variable SDK_DEBUG is not defined. Skipping SDK logging config")
 
@@ -32,14 +33,17 @@ class OpenstackSdk:
             sdk_conn = openstack.connect(cloud=openstack_cloud_name)
             LOG.info(f"Successfully connected to Openstack cloud '{openstack_cloud_name}'")
         except Exception as e:
-            LOG.error("Something went wrong when trying to connect to the Openstack cloud: %s", repr(e))
+            msg = "Something went wrong when trying to connect to the Openstack cloud: %s", repr(e)
+            print(msg)
+            LOG.error(msg)
+            sys.exit(1)
 
         # Load all available Openstack services
         self.openstack_services_mixin(sdk_conn)
         self.enabled_services = self.list_active_openstack_services()
 
 
-    def create_logger(self, loglevel=logging.INFO):
+    def create_logger(self, loglevel=logging.DEBUG):
         # Create logger
         LOG = logging.getLogger("openstacksdk")
         LOG.setLevel(loglevel)
@@ -64,7 +68,9 @@ class OpenstackSdk:
             try:
                 os.environ[os_var]
             except KeyError:
-                LOG.info(f"Required environment variable {os_var} is not defined. Exiting")
+                msg = f"Required environment variable {os_var} is not defined. Exiting"
+                print(msg)
+                LOG.info(msg)
                 sys.exit(1)
 
 
@@ -89,5 +95,4 @@ class OpenstackSdk:
 # For testing purposes, run this file directly
 if __name__ == "__main__":
     sdk = OpenstackSdk()
-    teste = 'sdk.COMPUTE.servers.show("test-vm")'
-    print(eval(teste))
+    print(sdk.enabled_services)
