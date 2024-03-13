@@ -12,3 +12,4 @@ __pycache__/
 clouds.yaml
 *.log
 *openrc
+nginx/nginx.conf
