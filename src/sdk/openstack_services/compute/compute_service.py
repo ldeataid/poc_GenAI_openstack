@@ -16,16 +16,14 @@ class ComputeService:
     """The compute service (Nova)"""
     
     def __init__(self, conn: Connection):
-        sdk_conn = conn
-        
-        self.availability_zones = AvailabilityZones(sdk_conn)
-        self.flavors = Flavors(sdk_conn)
-        self.hypervisors = Hypervisors(sdk_conn)
-        self.interfaces = ServerInterfaces(sdk_conn)
-        self.keypairs = Keypairs(sdk_conn)
-        self.security_groups = ServerSecurityGroups(sdk_conn)
-        self.server_groups = ServerGroups(sdk_conn)
-        self.servers = Servers(sdk_conn)
-        self.services = Services(sdk_conn)
-        self.volume_attachments = ServerVolumeAttachments(sdk_conn)
+        self.availability_zones = AvailabilityZones(conn)
+        self.flavors = Flavors(conn)
+        self.hypervisors = Hypervisors(conn)
+        self.interfaces = ServerInterfaces(conn)
+        self.keypairs = Keypairs(conn)
+        self.security_groups = ServerSecurityGroups(conn)
+        self.server_groups = ServerGroups(conn)
+        self.servers = Servers(conn)
+        self.services = Services(conn)
+        self.volume_attachments = ServerVolumeAttachments(conn)
 

@@ -11,10 +11,8 @@ class StorageService:
     """The block storage service (Cinder)"""
     
     def __init__(self, conn: Connection):
-        sdk_conn = conn
-
-        self.backend_pools = BackendPools(sdk_conn)
-        self.backups = Backups(sdk_conn)
-        self.services = Services(sdk_conn)
-        self.snapshots = Snapshots(sdk_conn)
-        self.volumes = Volumes(sdk_conn)
+        self.backend_pools = BackendPools(conn)
+        self.backups = Backups(conn)
+        self.services = Services(conn)
+        self.snapshots = Snapshots(conn)
+        self.volumes = Volumes(conn)

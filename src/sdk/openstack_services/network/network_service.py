@@ -13,12 +13,10 @@ class NetworkService:
     """The network service (Neutron)"""
     
     def __init__(self, conn: Connection):
-        sdk_conn = conn
-
-        self.agents = Agents(sdk_conn)
-        self.networks = Networks(sdk_conn)
-        self.pools = Pools(sdk_conn)
-        self.ports = Ports(sdk_conn)
-        self.routers = Routers(sdk_conn)
-        self.security_groups = SecurityGroups(sdk_conn)
-        self.subnets = Subnets(sdk_conn)
+        self.agents = Agents(conn)
+        self.networks = Networks(conn)
+        self.pools = Pools(conn)
+        self.ports = Ports(conn)
+        self.routers = Routers(conn)
+        self.security_groups = SecurityGroups(conn)
+        self.subnets = Subnets(conn)
