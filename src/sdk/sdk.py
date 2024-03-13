@@ -1,8 +1,14 @@
 import os, sys
 import logging
 import openstack
-from openstack_services.identity.identity_service import IdentityService
+from openstack.connection import Connection
+
+from openstack_services.baremetal.baremetal_service import BaremetalService
 from openstack_services.compute.compute_service import ComputeService
+from openstack_services.identity.identity_service import IdentityService
+from openstack_services.image.image_service import ImageService
+from openstack_services.network.network_service import NetworkService
+from openstack_services.storage.storage_service import StorageService
 
 
 LOG = logging.getLogger("openstacksdk")
@@ -28,9 +34,8 @@ class OpenstackSdk:
         except Exception as e:
             LOG.error("Something went wrong when trying to connect to the Openstack cloud: %s", repr(e))
 
-        # Define all services
-        self.IDENTITY = IdentityService(sdk_conn)
-        self.COMPUTE = ComputeService(sdk_conn)
+        # Load all available Openstack services
+        self.openstack_services_mixin(sdk_conn)
 
 
     def create_logger(self, loglevel=logging.INFO):
@@ -60,6 +65,15 @@ class OpenstackSdk:
             except KeyError:
                 LOG.info(f"Required environment variable {os_var} is not defined. Exiting")
                 sys.exit(1)
+
+
+    def openstack_services_mixin(self, sdk_conn: Connection):
+        self.BAREMETAL = BaremetalService(sdk_conn)
+        self.COMPUTE = ComputeService(sdk_conn)
+        self.IDENTITY = IdentityService(sdk_conn)
+        self.IMAGE = ImageService(sdk_conn)
+        self.NETWORK = NetworkService(sdk_conn)
+        self.STORAGE = StorageService(sdk_conn)
 
 
 if __name__ == "__main__":
