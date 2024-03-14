@@ -1,12 +1,12 @@
 {
     "Functions": [
         {
-            "path": "IDENTITY.services.list",
+            "path": "KEYSTONE.services.list",
             "parameters": "",
             "action": "List all services"
         },
         {
-            "path": "IDENTITY.services.show",
+            "path": "KEYSTONE.services.show",
             "parameters": "service_name",
             "action": "Show details of a specific service"
         }

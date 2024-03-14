@@ -21,7 +21,8 @@ class OpenstackSdk:
 
         # Enable SDK debug
         try:
-            openstack.enable_logging(debug=os.environ["SDK_DEBUG"])
+            if os.environ["SDK_DEBUG"].lower() == "true":
+                openstack.enable_logging(debug=True)
         except KeyError:
             LOG.info("Variable SDK_DEBUG is not defined. Skipping SDK logging config")
 
@@ -32,14 +33,17 @@ class OpenstackSdk:
             sdk_conn = openstack.connect(cloud=openstack_cloud_name)
             LOG.info(f"Successfully connected to Openstack cloud '{openstack_cloud_name}'")
         except Exception as e:
-            LOG.error("Something went wrong when trying to connect to the Openstack cloud: %s", repr(e))
+            msg = "Something went wrong when trying to connect to the Openstack cloud: %s", repr(e)
+            print(msg)
+            LOG.error(msg)
+            sys.exit(1)
 
         # Load all available Openstack services
         self.openstack_services_mixin(sdk_conn)
         self.enabled_services = self.list_active_openstack_services()
 
 
-    def create_logger(self, loglevel=logging.INFO):
+    def create_logger(self, loglevel=logging.DEBUG):
         # Create logger
         LOG = logging.getLogger("openstacksdk")
         LOG.setLevel(loglevel)
@@ -64,21 +68,23 @@ class OpenstackSdk:
             try:
                 os.environ[os_var]
             except KeyError:
-                LOG.info(f"Required environment variable {os_var} is not defined. Exiting")
+                msg = f"Required environment variable {os_var} is not defined. Exiting"
+                print(msg)
+                LOG.info(msg)
                 sys.exit(1)
 
 
     def openstack_services_mixin(self, sdk_conn: Connection):
         self.BAREMETAL = BaremetalService(sdk_conn)
-        self.COMPUTE = ComputeService(sdk_conn)
-        self.IDENTITY = IdentityService(sdk_conn)
-        self.IMAGE = ImageService(sdk_conn)
-        self.NETWORK = NetworkService(sdk_conn)
-        self.STORAGE = StorageService(sdk_conn)
+        self.NOVA = ComputeService(sdk_conn)
+        self.KEYSTONE = IdentityService(sdk_conn)
+        self.GLANCE = ImageService(sdk_conn)
+        self.NEUTRON = NetworkService(sdk_conn)
+        self.CINDERV3 = StorageService(sdk_conn)
 
 
     def list_active_openstack_services(self):
-        sdk_services_response = self.IDENTITY.services.list()
+        sdk_services_response = self.KEYSTONE.services.list()
         sdk_services = json.loads(sdk_services_response)
         active_services = []
         for service in sdk_services:
