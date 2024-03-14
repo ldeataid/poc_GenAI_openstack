@@ -1,7 +1,7 @@
 {
     "Functions": [
         {
-            "path": "KEYSTONE.services.list",
+            "path": "KEYSTONE.services.list()",
             "parameters": "",
             "action": "List all services"
         },

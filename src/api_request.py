@@ -67,7 +67,7 @@ class openstack_request():
 
 
     def get_API_response(self):
-        path = self.self.get_path()
+        path = self.get_path()
 
         try:
             service = re.findall(r'[A-Z][A-Z\d]+', path)[0]
