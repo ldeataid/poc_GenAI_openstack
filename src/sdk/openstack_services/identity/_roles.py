@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Roles:
 
     def list(self):
         LOG.debug("Trying to fetch roles")
-        return self.sdk_conn.identity.roles()
+        response = self.sdk_conn.identity.roles()
+        return json.dumps(list(response))
 
     
     def show(self, role_id):
@@ -20,4 +22,5 @@ class Roles:
             raise AttributeError("Required attribute 'role_id' was not defined")
 
         LOG.debug(f"Trying to find '{role_id}' role")
-        return self.sdk_conn.identity.find_role(role_id)
+        response = self.sdk_conn.identity.find_role(role_id)
+        return json.dumps(response)

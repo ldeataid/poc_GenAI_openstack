@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Domains:
 
     def list(self):
         LOG.debug("Trying to fetch domains")
-        return self.sdk_conn.identity.domains()
+        response = self.sdk_conn.identity.domains()
+        return json.dumps(list(response))
 
     
     def show(self, domain_id):
@@ -20,4 +22,5 @@ class Domains:
             raise AttributeError("Required attribute 'domain_id' was not defined")
 
         LOG.debug(f"Trying to find '{domain_id}' domain")
-        return self.sdk_conn.identity.find_domain(domain_id)
+        response = self.sdk_conn.identity.find_domain(domain_id)
+        return json.dumps(response)

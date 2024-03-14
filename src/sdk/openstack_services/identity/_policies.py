@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Policies:
 
     def list(self):
         LOG.debug("Trying to fetch policies")
-        return self.sdk_conn.identity.policies()
+        response = self.sdk_conn.identity.policies()
+        return json.dumps(list(response))
 
     
     def show(self, policy_id):
@@ -20,4 +22,5 @@ class Policies:
             raise AttributeError("Required attribute 'policy_id' was not defined")
 
         LOG.debug(f"Trying to find '{policy_id}' policy")
-        return self.sdk_conn.identity.find_policy(policy_id)
+        response = self.sdk_conn.identity.find_policy(policy_id)
+        return json.dumps(response)

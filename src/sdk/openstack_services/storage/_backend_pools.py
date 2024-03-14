@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,4 +13,5 @@ class BackendPools:
 
     def list(self):
         LOG.debug("Trying to fetch storage backend pools")
-        return self.sdk_conn.block_storage.backend_pools()
+        response = self.sdk_conn.block_storage.backend_pools()
+        return json.dumps(list(response))

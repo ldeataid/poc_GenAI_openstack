@@ -3,7 +3,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from constants import LOG
 from sdk.sdk import OpenstackSdk
-import re, json
+import re
 
 
 class openstack_request():
@@ -73,7 +73,7 @@ class openstack_request():
             service = re.findall(r'[A-Z][A-Z\d]+', path)[0]
             if service.lower() in self.enabled_openstack_services:
                 response = eval(path)
-                str_response = f"OpenStack API response = {json.dumps(response)}"
+                str_response = f"OpenStack API response = {response}"
                 return str_response
 
             msg = f"Service {service} is not available in this cluster"

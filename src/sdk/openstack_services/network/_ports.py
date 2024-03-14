@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Ports:
 
     def list(self):
         LOG.debug("Trying to fetch ports")
-        return self.sdk_conn.network.ports()
+        response = self.sdk_conn.network.ports()
+        return json.dumps(list(response))
 
     
     def show(self, port_id):
@@ -20,4 +22,5 @@ class Ports:
             raise AttributeError("Required attribute 'port_id' was not defined")
 
         LOG.debug(f"Trying to find '{port_id}' port")
-        return self.sdk_conn.network.find_port(port_id)
+        response = self.sdk_conn.network.find_port(port_id)
+        return json.dumps(response)

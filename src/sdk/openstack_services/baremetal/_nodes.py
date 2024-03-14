@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,12 +13,14 @@ class Nodes:
 
     def list(self):
         LOG.debug("Trying to fetch nodes")
-        return self.sdk_conn.baremetal.nodes()
+        response = self.sdk_conn.baremetal.nodes()
+        return json.dumps(list(response))
 
-    
+
     def show(self, node_id):
         if not node_id:
             raise AttributeError("Required attribute 'node_id' was not defined")
 
         LOG.debug(f"Trying to find '{node_id}' node")
-        return self.sdk_conn.baremetal.find_node(node_id)
+        response = self.sdk_conn.baremetal.find_node(node_id)
+        return json.dumps(response)

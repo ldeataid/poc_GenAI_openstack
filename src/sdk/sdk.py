@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, json
 import logging
 import openstack
 from openstack.connection import Connection
@@ -85,14 +85,14 @@ class OpenstackSdk:
 
     def list_active_openstack_services(self):
         sdk_services_response = self.KEYSTONE.services.list()
+        sdk_services = json.loads(sdk_services_response)
         active_services = []
-        for service in sdk_services_response:
-            if service.is_enabled:
-                active_services.append(service.name)
+        for service in sdk_services:
+            if service["is_enabled"]:
+                active_services.append(service["name"])
         return active_services
 
 
 # For testing purposes, run this file directly
 if __name__ == "__main__":
     sdk = OpenstackSdk()
-    print(sdk.enabled_services)

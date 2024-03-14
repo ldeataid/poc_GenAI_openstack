@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Services:
 
     def list(self):
         LOG.debug("Trying to fetch block storage services")
-        return self.sdk_conn.block_storage.services()
+        response = self.sdk_conn.block_storage.services()
+        return json.dumps(list(response))
 
     
     def show(self, service_id):
@@ -20,4 +22,5 @@ class Services:
             raise AttributeError("Required attribute 'service_id' was not defined")
 
         LOG.debug(f"Trying to find '{service_id}' service")
-        return self.sdk_conn.block_storage.find_service(service_id)
+        response = self.sdk_conn.block_storage.find_service(service_id)
+        return json.dumps(response)
