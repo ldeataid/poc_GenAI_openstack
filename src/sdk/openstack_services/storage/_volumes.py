@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Volumes:
 
     def list(self):
         LOG.debug("Trying to fetch volumes")
-        return self.sdk_conn.block_storage.volumes()
+        response = self.sdk_conn.block_storage.volumes()
+        return json.dumps(list(response))
 
     
     def show(self, volume_id):
@@ -20,7 +22,8 @@ class Volumes:
             raise AttributeError("Required attribute 'volume_id' was not defined")
 
         LOG.debug(f"Trying to find '{volume_id}' volume")
-        return self.sdk_conn.block_storage.find_volume(volume_id)
+        response = self.sdk_conn.block_storage.find_volume(volume_id)
+        return json.dumps(response)
 
 
     def show_metadata(self, volume_id):
@@ -28,4 +31,5 @@ class Volumes:
             raise AttributeError("Required attribute 'volume_id' was not defined")
 
         LOG.debug(f"Trying to find '{volume_id}' volume's metadata")
-        return self.sdk_conn.block_storage.get_volume_metadata(volume_id)
+        response = self.sdk_conn.block_storage.get_volume_metadata(volume_id)
+        return json.dumps(response)

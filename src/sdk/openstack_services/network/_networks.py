@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Networks:
 
     def list(self):
         LOG.debug("Trying to fetch networks")
-        return self.sdk_conn.network.networks()
+        response = self.sdk_conn.network.networks()
+        return json.dumps(list(response))
 
     
     def show(self, network_id):
@@ -20,4 +22,5 @@ class Networks:
             raise AttributeError("Required attribute 'network_id' was not defined")
 
         LOG.debug(f"Trying to find '{network_id}' network")
-        return self.sdk_conn.network.find_network(network_id)
+        response = self.sdk_conn.network.find_network(network_id)
+        return json.dumps(response)

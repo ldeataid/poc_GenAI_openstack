@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Routers:
 
     def list(self):
         LOG.debug("Trying to fetch routers")
-        return self.sdk_conn.network.routers()
+        response = self.sdk_conn.network.routers()
+        return json.dumps(list(response))
 
     
     def show(self, router_id):
@@ -20,4 +22,5 @@ class Routers:
             raise AttributeError("Required attribute 'router_id' was not defined")
 
         LOG.debug(f"Trying to find '{router_id}' router")
-        return self.sdk_conn.network.find_router(router_id)
+        response = self.sdk_conn.network.find_router(router_id)
+        return json.dumps(response)

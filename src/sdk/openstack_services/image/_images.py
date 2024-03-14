@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Images:
 
     def list(self):
         LOG.debug("Trying to fetch images")
-        return self.sdk_conn.image.images()
+        response = self.sdk_conn.image.images()
+        return json.dumps(list(response))
 
     
     def show(self, image_id):
@@ -20,4 +22,5 @@ class Images:
             raise AttributeError("Required attribute 'image_id' was not defined")
 
         LOG.debug(f"Trying to find '{image_id}' image")
-        return self.sdk_conn.image.find_image(image_id)
+        response = self.sdk_conn.image.find_image(image_id)
+        return json.dumps(response)

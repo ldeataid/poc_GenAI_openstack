@@ -1,3 +1,4 @@
+import json
 import logging
 from openstack.connection import Connection
 
@@ -12,7 +13,8 @@ class Endpoints:
 
     def list(self):
         LOG.debug("Trying to fetch endpoints")
-        return self.sdk_conn.identity.endpoints()
+        response = self.sdk_conn.identity.endpoints()
+        return json.dumps(list(response))
 
     
     def show(self, endpoint_id):
@@ -20,4 +22,5 @@ class Endpoints:
             raise AttributeError("Required attribute 'endpoint_id' was not defined")
 
         LOG.debug(f"Trying to find '{endpoint_id}' endpoint")
-        return self.sdk_conn.identity.find_endpoint(endpoint_id)
+        response = self.sdk_conn.identity.find_endpoint(endpoint_id)
+        return json.dumps(response)
