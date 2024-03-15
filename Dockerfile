@@ -4,19 +4,21 @@ FROM python:3.8
 # Set the working directory inside the container
 WORKDIR /app
 
-# Create src directory
-RUN mkdir src
-
 # Copy the requirements file into the container
 COPY ./requirements.txt .
 
 # Install the Python dependencies
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
-# Copies everything without the file structure so we don't need
-# to even set the PYTHONPATH and just go with the flow
+# Copy src folder into /app
 COPY ./src/* ./
+
+# Copy /sdk into /app/sdk
+RUN mkdir sdk
+COPY ./src/sdk/* ./sdk
+
+# Specify PYTHONPATH so modules can be found
+RUN export PYTHONPATH=/app
 
 # Specify the command to run when the container starts
 CMD ["python", "main.py"]

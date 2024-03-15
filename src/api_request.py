@@ -35,7 +35,10 @@ class openstack_request():
 
     def get_path(self):
         completion = self.get_path_completion()
-        path = "self.openstack_sdk." + completion
+        if completion[-1] == ")":
+            path = "self.openstack_sdk." + completion
+        else:
+            path = "self.openstack_sdk." + completion + "()"
 
         return path
 
@@ -43,6 +46,7 @@ class openstack_request():
     def get_path_completion(self):
         # Initiate OpenAI
         llm = ChatOpenAI(openai_api_key = self.api_key,
+                         model_name="gpt-4-turbo-preview",
                          temperature=0.4)
 
         # Expected llm response format
@@ -50,7 +54,7 @@ class openstack_request():
 
         # Create prompt
         prompt = ChatPromptTemplate.from_messages([
-        ("system", f"As a function path generator, your role is to suggest the most suitable function path for retrieving information from an OpenStack platform based on the user's question.\n\nYou'll need to analyze the context to identify available functions within the platform.\n\nIt's important to note that sometimes the user query will lead to a function that has an attribute associated with it. This attribute value will typically be implied within the user query rather than explicitly stated. In such cases, the suggested path should include the attribute value enclosed in quotes inside parentheses after the function path, like so: path('value').\n\nBefore providing a recommendation, ensure that the recommended function is indeed present in the provided context and analyze its action to determine the best path for addressing the user's query.\n\nWhen offering suggestions, only provide the API endpoint in the following format: {format_response}. Consistently maintain this format. Remember to review the entire context thoroughly before providing an answer."),
+        ("system", f"As a function path generator, your role is to suggest the most suitable function path for retrieving information from an OpenStack platform based on the user's question.\n\nYou'll need to analyze the context to identify available functions within the platform.\n\nIt's important to note that sometimes the user query will lead to a function that has an attribute associated with it. This attribute value will typically be implied within the user query rather than explicitly stated. In such cases, the suggested path should include the attribute value enclosed in quotes inside parentheses after the function path, like so: path('value'). Additionally, ensure that the function path in the answer is never 'path'. \n\nBefore providing a recommendation, ensure that the recommended function is indeed present in the provided context and analyze its action to determine the best path for addressing the user's query.\n\nWhen offering suggestions, only provide the API endpoint in the following format: {format_response}. Consistently maintain this format. Remember to review the entire context thoroughly before providing an answer."),
         ("user", "Context:{context} \n\n\n Question:{question}")
         ])
 
@@ -67,7 +71,7 @@ class openstack_request():
 
 
     def get_API_response(self):
-        path = self.self.get_path()
+        path = self.get_path()
 
         try:
             service = re.findall(r'[A-Z][A-Z\d]+', path)[0]

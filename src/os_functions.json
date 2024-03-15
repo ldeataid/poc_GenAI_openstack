@@ -9,6 +9,71 @@
             "path": "KEYSTONE.services.show",
             "parameters": "service_name",
             "action": "Show details of a specific service"
+        },
+        {
+            "path": "KEYSTONE.projects.list",
+            "parameters": "",
+            "action": "List all projects"
+        },
+        {
+            "path": "KEYSTONE.projects.show",
+            "parameters": "project_name",
+            "action": "Show details of a specific project"
+        },
+        {
+            "path": "NOVA.flavors.list",
+            "parameters": "",
+            "action": "List all flavors"
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
+        },
+        {
+            "path": "",
+            "parameters": "",
+            "action": ""
         }
     ]
 }

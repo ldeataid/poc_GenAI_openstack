@@ -100,7 +100,7 @@ def ask(query, session):
 
 
 def feed_vectorstore(query, session):
-    response = api_response(query, session)
+    response = api_response(query)
 
     if response is None:
         raise Exception('API response is null')

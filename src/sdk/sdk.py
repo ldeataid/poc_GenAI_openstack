@@ -91,8 +91,3 @@ class OpenstackSdk:
             if service["is_enabled"]:
                 active_services.append(service["name"])
         return active_services
-
-
-# For testing purposes, run this file directly
-if __name__ == "__main__":
-    sdk = OpenstackSdk()
