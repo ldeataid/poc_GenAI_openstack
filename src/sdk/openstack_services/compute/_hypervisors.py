@@ -23,6 +23,9 @@ class Hypervisors:
 
         LOG.debug(f"Trying to find hypervisor '{hypervisor_id}'")
         response = self.sdk_conn.compute.find_hypervisor(hypervisor_id)
+        if response is None:
+            raise Exception("Hypervisor not found!")
+
         return json.dumps(response)
 
 
@@ -32,4 +35,7 @@ class Hypervisors:
 
         LOG.debug(f"Trying to find hypervisor '{hypervisor_id}' uptime")
         response = self.sdk_conn.compute.get_hypervisor_uptime(hypervisor_id)
+        if response is None:
+            raise Exception("Hypervisor not found!")
+
         return json.dumps(response)

@@ -16,11 +16,14 @@ class Credentials:
         response = self.sdk_conn.identity.credentials()
         return json.dumps(list(response))
 
-    
+
     def show(self, credential_id):
         if not credential_id:
             raise AttributeError("Required attribute 'credential_id' was not defined")
 
         LOG.debug(f"Trying to find '{credential_id}' credential")
         response = self.sdk_conn.identity.find_credential(credential_id)
+        if response is None:
+            raise Exception("Credentials not found!")
+
         return json.dumps(response)

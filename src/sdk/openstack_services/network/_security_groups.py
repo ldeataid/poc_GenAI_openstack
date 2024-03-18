@@ -16,11 +16,14 @@ class SecurityGroups:
         response = self.sdk_conn.network.security_groups()
         return json.dumps(list(response))
 
-    
+
     def show(self, security_group_id):
         if not security_group_id:
             raise AttributeError("Required attribute 'security_group_id' was not defined")
 
         LOG.debug(f"Trying to find '{security_group_id}' security group")
         response = self.sdk_conn.network.find_security_group(security_group_id)
+        if response is None:
+            raise Exception("Security group not found!")
+
         return json.dumps(response)

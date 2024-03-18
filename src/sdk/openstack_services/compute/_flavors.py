@@ -23,6 +23,8 @@ class Flavors:
 
         LOG.debug(f"Trying to find '{flavor_id}' flavor")
         response = self.sdk_conn.compute.find_flavor(flavor_id)
+        if response is None:
+            raise Exception("Flavor not found!")
         return json.dumps(response)
 
 
@@ -32,6 +34,8 @@ class Flavors:
 
         LOG.debug(f"Trying to find '{flavor_id}' flavor's extra specs")
         response = self.sdk_conn.compute.fetch_flavor_extra_specs(flavor_id)
+        if response is None:
+            raise Exception("Flavor not found!")
         return json.dumps(list(response))
 
 
@@ -41,4 +45,7 @@ class Flavors:
 
         LOG.debug(f"Trying to find users who have access to flavor '{flavor_id}'")
         response = self.sdk_conn.compute.get_flavor_access(flavor_id)
+        if response is None:
+            raise Exception("Flavor not found!")
+
         return json.dumps(list(response))

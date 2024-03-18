@@ -16,11 +16,14 @@ class Domains:
         response = self.sdk_conn.identity.domains()
         return json.dumps(list(response))
 
-    
+
     def show(self, domain_id):
         if not domain_id:
             raise AttributeError("Required attribute 'domain_id' was not defined")
 
         LOG.debug(f"Trying to find '{domain_id}' domain")
         response = self.sdk_conn.identity.find_domain(domain_id)
+        if response is None:
+            raise Exception("Domain not found!")
+
         return json.dumps(response)

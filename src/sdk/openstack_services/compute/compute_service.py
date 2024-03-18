@@ -14,7 +14,7 @@ from ._volume_attachments import ServerVolumeAttachments
 
 class ComputeService:
     """The compute service (Nova)"""
-    
+
     def __init__(self, conn: Connection):
         self.availability_zones = AvailabilityZones(conn)
         self.flavors = Flavors(conn)

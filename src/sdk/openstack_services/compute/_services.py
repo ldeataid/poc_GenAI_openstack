@@ -23,4 +23,7 @@ class Services:
 
         LOG.debug(f"Trying to find '{service_id}' service")
         response = self.sdk_conn.compute.find_service(service_id)
+        if response is None:
+            raise Exception("Service not found!")
+
         return json.dumps(response)

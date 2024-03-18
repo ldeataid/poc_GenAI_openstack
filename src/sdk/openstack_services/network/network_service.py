@@ -11,7 +11,7 @@ from ._subnets import Subnets
 
 class NetworkService:
     """The network service (Neutron)"""
-    
+
     def __init__(self, conn: Connection):
         self.agents = Agents(conn)
         self.networks = Networks(conn)

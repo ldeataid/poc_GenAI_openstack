@@ -22,7 +22,7 @@ class ServerInterfaces:
 
     def show(self, server_id, interface_id):
         if not server_id:
-            raise AttributeError("Required attribute 'server_id' was not defined")        
+            raise AttributeError("Required attribute 'server_id' was not defined")
 
         if not interface_id:
             raise AttributeError("Required attribute 'interface_id' was not defined")

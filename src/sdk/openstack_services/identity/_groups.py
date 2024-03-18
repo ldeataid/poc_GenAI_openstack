@@ -16,13 +16,16 @@ class Groups:
         response = self.sdk_conn.identity.groups()
         return json.dumps(list(response))
 
-    
+
     def show(self, group_id):
         if not group_id:
             raise AttributeError("Required attribute 'group_id' was not defined")
 
         LOG.debug(f"Trying to find '{group_id}' group")
         response = self.sdk_conn.identity.find_group(group_id)
+        if response is None:
+            raise Exception("Group not found!")
+
         return json.dumps(response)
 
 
@@ -32,6 +35,9 @@ class Groups:
 
         LOG.debug(f"Trying to find users in '{group_id}' group")
         response = self.sdk_conn.identity.group_users(group_id)
+        if response is None:
+            raise Exception("Group not found!")
+
         return json.dumps(list(response))
 
 

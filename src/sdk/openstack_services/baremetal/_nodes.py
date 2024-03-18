@@ -23,4 +23,7 @@ class Nodes:
 
         LOG.debug(f"Trying to find '{node_id}' node")
         response = self.sdk_conn.baremetal.find_node(node_id)
+        if response is None:
+            raise Exception("Node not found!")
+
         return json.dumps(response)

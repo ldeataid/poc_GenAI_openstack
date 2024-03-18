@@ -9,7 +9,7 @@ from ._volumes import Volumes
 
 class StorageService:
     """The block storage service (Cinder)"""
-    
+
     def __init__(self, conn: Connection):
         self.backend_pools = BackendPools(conn)
         self.backups = Backups(conn)

@@ -16,11 +16,14 @@ class Routers:
         response = self.sdk_conn.network.routers()
         return json.dumps(list(response))
 
-    
+
     def show(self, router_id):
         if not router_id:
             raise AttributeError("Required attribute 'router_id' was not defined")
 
         LOG.debug(f"Trying to find '{router_id}' router")
         response = self.sdk_conn.network.find_router(router_id)
+        if response is None:
+            raise Exception("Router not found!")
+
         return json.dumps(response)
