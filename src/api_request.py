@@ -72,8 +72,7 @@ class openstack_request():
 
 
     def get_API_response(self):
-        # path = self.get_path()
-        path = "self.openstack_sdk.KEYSTONE.services.show('cinder')"
+        path = self.get_path()
         LOG.info(f"running '{path}' function")
 
         try:
