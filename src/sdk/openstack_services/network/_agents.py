@@ -16,11 +16,14 @@ class Agents:
         response = self.sdk_conn.network.agents()
         return json.dumps(list(response))
 
-    
+
     def show(self, agent_id):
         if not agent_id:
             raise AttributeError("Required attribute 'agent_id' was not defined")
 
         LOG.debug(f"Trying to find '{agent_id}' network agent")
         response = self.sdk_conn.network.get_agent(agent_id)
+        if response is None:
+            raise Exception("Image not found!")
+
         return json.dumps(response)

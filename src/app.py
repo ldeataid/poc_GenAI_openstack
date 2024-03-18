@@ -78,11 +78,10 @@ def create_vectorstore(llm):
 
 
 def ask(query, session):
-    query_completion = query + ". If an API response is provided as context and in the provided API response doesn't have this information or no context is provided, make sure that your response is 'I don't know'. Unless the user explicitly ask for commands you will not provide any. Make sure to read the entire given context before giving your response."
+    query_completion = query + ". If the API response lacks the necessary information or if no context is provided, respond with 'I don't know'. Only provide commands if explicitly requested by the user. Ensure a comprehensive understanding of the given context before generating a response."
     LOG.info(f"User query: {query}")
     response = session['generator'].invoke(query_completion)
 
-    print(f'######{response}', file=sys.stderr)
     client = OpenAI(api_key=OPENAI_API_KEY)
     prompt_status = client.chat.completions.create(model='gpt-3.5-turbo',
                                                    messages=[{"role": "system",
@@ -93,7 +92,7 @@ def ask(query, session):
     if 'negative' in prompt_status.choices[0].message.content.lower():
         LOG.info("Negative response from LLM")
         feed_vectorstore(query, session)
-        response = session['generator'].invoke(query)
+        response = session['generator'].invoke(f"{query}. If the provided context indicates an error during the API response retrieval, relay this information in your response.")
 
     LOG.info(f"Chatbot response: {response['answer']}")
     return response['answer']

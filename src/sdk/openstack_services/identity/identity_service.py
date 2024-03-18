@@ -14,7 +14,7 @@ from ._users import Users
 
 class IdentityService:
     """The identity service (Keystone)"""
-    
+
     def __init__(self, conn: Connection):
         self.credentials = Credentials(conn)
         self.domains = Domains(conn)

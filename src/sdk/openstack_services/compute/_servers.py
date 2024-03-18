@@ -16,13 +16,16 @@ class Servers:
         response = self.sdk_conn.compute.servers()
         return json.dumps(list(response))
 
-    
+
     def show(self, server_id):
         if not server_id:
             raise AttributeError("Required attribute 'server_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_id}' server")
         response = self.sdk_conn.compute.find_server(server_id)
+        if response is None:
+            raise Exception("Server not found!")
+
         return json.dumps(response)
 
 
@@ -32,4 +35,7 @@ class Servers:
 
         LOG.debug(f"Trying to find '{server_id}' server")
         response = self.sdk_conn.compute.get_server_metadata(server_id)
+        if response is None:
+            raise Exception("Server not found!")
+
         return json.dumps(response)

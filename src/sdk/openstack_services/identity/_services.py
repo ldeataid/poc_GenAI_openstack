@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 from openstack.connection import Connection
 
 
@@ -16,11 +17,14 @@ class Services:
         response = self.sdk_conn.identity.services()
         return json.dumps(list(response))
 
-    
+
     def show(self, service_id):
         if not service_id:
             raise AttributeError("Required attribute 'service_id' was not defined")
 
         LOG.debug(f"Trying to find '{service_id}' service")
         response = self.sdk_conn.identity.find_service(service_id)
+        if response is None:
+            raise Exception("Service not found!")
+
         return json.dumps(response)

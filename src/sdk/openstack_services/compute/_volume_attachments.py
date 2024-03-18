@@ -19,10 +19,10 @@ class ServerVolumeAttachments:
         response = self.sdk_conn.compute.volume_attachments(server_id)
         return json.dumps(list(response))
 
-    
+
     def show(self, server_id, volume_attachment_id):
         if not server_id:
-            raise AttributeError("Required attribute 'server_id' was not defined")        
+            raise AttributeError("Required attribute 'server_id' was not defined")
 
         if not volume_attachment_id:
             raise AttributeError("Required attribute 'volume_attachment_id' was not defined")

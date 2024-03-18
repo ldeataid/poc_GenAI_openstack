@@ -16,11 +16,14 @@ class Users:
         response = self.sdk_conn.identity.users()
         return json.dumps(list(response))
 
-    
+
     def show(self, user_id):
         if not user_id:
             raise AttributeError("Required attribute 'user_id' was not defined")
 
         LOG.debug(f"Trying to find '{user_id}' user")
         response = self.sdk_conn.identity.find_user(user_id)
+        if response is None:
+            raise Exception("User not found!")
+
         return json.dumps(response)

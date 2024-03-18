@@ -4,6 +4,7 @@ from langchain_openai import ChatOpenAI
 from constants import LOG
 from sdk.sdk import OpenstackSdk
 import re
+import sys
 
 
 class openstack_request():
@@ -71,13 +72,22 @@ class openstack_request():
 
 
     def get_API_response(self):
-        path = self.get_path()
+        # path = self.get_path()
+        path = "self.openstack_sdk.KEYSTONE.services.show('cinder')"
+        LOG.info(f"running '{path}' function")
 
         try:
             service = re.findall(r'[A-Z][A-Z\d]+', path)[0]
             if service.lower() in self.enabled_openstack_services:
-                response = eval(path)
+                try:
+                    response = eval(path)
+                except:
+                    msg = f"Error trying to execute {path} function. No information was retrieved"
+                    LOG.warn(msg)
+                    return msg
+
                 str_response = f"OpenStack API response = {response}"
+                LOG.info("")
                 return str_response
 
             msg = f"Service {service} is not available in this cluster"
