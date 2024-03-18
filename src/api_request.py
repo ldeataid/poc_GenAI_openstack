@@ -87,7 +87,7 @@ class openstack_request():
                     return msg
 
                 str_response = f"OpenStack API response = {response}"
-                LOG.info("")
+                LOG.info("API response successfully retrieved.")
                 return str_response
 
             msg = f"Service {service} is not available in this cluster"

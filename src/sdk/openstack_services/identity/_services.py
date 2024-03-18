@@ -1,6 +1,5 @@
 import json
 import logging
-import sys
 from openstack.connection import Connection
 
 
