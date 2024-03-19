@@ -13,7 +13,8 @@ class ServerGroups:
 
     def list(self):
         LOG.debug("Trying to fetch server_groups")
-        response = self.sdk_conn.compute.server_groups()
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.compute.server_groups(all_projects=all_projects)
         return json.dumps(list(response))
 
 
@@ -22,7 +23,8 @@ class ServerGroups:
             raise AttributeError("Required attribute 'server_group_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_group_id}' server group")
-        response = self.sdk_conn.compute.find_server_group(server_group_id)
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.compute.find_server_group(server_group_id, all_projects=all_projects)
         if response is None:
             raise Exception("Server group not found!")
 

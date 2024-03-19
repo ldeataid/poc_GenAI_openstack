@@ -13,7 +13,8 @@ class Snapshots:
 
     def list(self):
         LOG.debug("Trying to fetch snapshots")
-        response = self.sdk_conn.block_storage.snapshots()
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.block_storage.snapshots(all_projects=all_projects)
         return json.dumps(list(response))
 
 
@@ -22,7 +23,8 @@ class Snapshots:
             raise AttributeError("Required attribute 'snapshot_id' was not defined")
 
         LOG.debug(f"Trying to find '{snapshot_id}' snapshot")
-        response = self.sdk_conn.block_storage.find_snapshot(snapshot_id)
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.block_storage.find_snapshot(snapshot_id, all_projects=all_projects)
         if response is None:
             raise Exception("Snapshot not found!")
 
