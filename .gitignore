@@ -1,10 +1,15 @@
+env/
 venv/
 certs/ca.crt
 certs/apiserver-kubelet-client.crt
 certs/apiserver-kubelet-client.key
 test.py
-main.py
 .chroma/
 .idea/
 
 __pycache__/
+
+clouds.yaml
+*.log
+*openrc
+nginx/nginx.conf

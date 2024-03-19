@@ -1,16 +1,30 @@
 version: '3.7'
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - bridged_net
   poc_genAI:
     image: <image_name>:<tag_name>
-    container_name: wrc-chatbot-be
-    hostname: wrc-chatbot-be
+    container_name: openstack-chatbot-be
+    hostname: openstack-chatbot-be
     restart: unless-stopped
     network_mode: host
-    volumes:
-      - ./subclouds.json:/app/src/subclouds.json
     environment:
       OPENAI_API_KEY: ${openai_key}
-      OAM_IP: ${oam_ip}
-      WR_USER: ${user}
-      WR_PASSWORD: ${password}
-      TOKEN: ${k8s_token}
+      OS_CLOUD_NAME: ${}
+      OS_AUTH_URL: ${}
+      OS_USERNAME: ${}
+      OS_PASSWORD: ${}
+      OS_PROJECT_DOMAIN_NAME: ${}
+      OS_PROJECT_NAME: ${}
+      OS_USER_DOMAIN_NAME: ${}
+networks:
+  bridged_net:
+    driver: bridge

@@ -1,0 +1,99 @@
+{
+    "Functions": [
+        {
+            "path": "KEYSTONE.services.list",
+            "parameters": "",
+            "action": "List all services"
+        },
+        {
+            "path": "KEYSTONE.services.show",
+            "parameters": "service_name",
+            "action": "Show details of a specific service"
+        },
+        {
+            "path": "KEYSTONE.projects.list",
+            "parameters": "",
+            "action": "List all projects"
+        },
+        {
+            "path": "KEYSTONE.projects.show",
+            "parameters": "project_name",
+            "action": "Show details of a specific project"
+        },
+        {
+            "path": "NOVA.servers.list",
+            "parameters": "",
+            "action": "List all servers (VMs)"
+        },
+        {
+            "path": "NOVA.servers.show",
+            "parameters": "server_name",
+            "action": "Show details of a specific server"
+        },
+        {
+            "path": "NOVA.flavors.list",
+            "parameters": "",
+            "action": "List all flavors"
+        },
+        {
+            "path": "NOVA.services.list",
+            "parameters": "",
+            "action": "List all compute services"
+        },
+        {
+            "path": "NOVA.services.show",
+            "parameters": "service_name",
+            "action": "Show details of a specific compute service"
+        },
+        {
+            "path": "NOVA.hypervisors.list",
+            "parameters": "",
+            "action": "List all hypervisors"
+        },
+        {
+            "path": "NOVA.hypervisors.show",
+            "parameters": "hypervisor_name",
+            "action": "Show details of a specific hypervisor"
+        },
+        {
+            "path": "CINDERV3.volumes.list",
+            "parameters": "",
+            "action": "List all volumes"
+        },
+        {
+            "path": "CINDERV3.volumes.show",
+            "parameters": "volume_name",
+            "action": "Show details of a specific volume"
+        },
+        {
+            "path": "CINDERV3.backups.list",
+            "parameters": "",
+            "action": "List all backups"
+        },
+        {
+            "path": "CINDERV3.backups.show",
+            "parameters": "backup_name",
+            "action": "Show details of a specific backup"
+        },
+        {
+            "path": "NEUTRON.routers.list",
+            "parameters": "",
+            "action": "List all routers"
+        },
+        {
+            "path": "NEUTRON.routers.show",
+            "parameters": "router_name",
+            "action": "Show details of a specific router"
+        },
+        {
+            "path": "NEUTRON.agents.list",
+            "parameters": "",
+            "action": "List all network agents"
+        },
+        {
+            "path": "NEUTRON.agents.show",
+            "parameters": "agent_name",
+            "action": "Show details of a specific network agent"
+        }
+    ]
+}
