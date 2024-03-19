@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: copilot
+  labels:
+    app: copilot-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: copilot-api
+  template:
+    metadata:
+      labels:
+        app: copilot-api
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: copilot
+        image: {{ .Values.copilot.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 2000
+        envFrom:
+        - secretRef:
+            name: copilot-secret
+      initContainers:
+      - name: copilot-init
+        image: soarinferret/iptablesproxy:1.1.0
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - |
+          ip link add eth_openstack type dummy;
+          ip address add {{ .Values.copilot.openstack.ip }}/24 dev eth_openstack;
+          echo '1' | tee /proc/sys/net/ipv4/conf/eth_openstack/forwarding &&
+          iptables -t nat -A OUTPUT -d {{ .Values.copilot.openstack.ip }} -p tcp \
+          --dport {{ .Values.copilot.openstack.port }} -j DNAT \
+          --to {{ .Values.copilot.openstack.proxyIp }}
+        securityContext:
+          privileged: true
