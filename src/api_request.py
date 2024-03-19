@@ -32,7 +32,7 @@ class openstack_request():
 
 
     def get_path(self):
-        completion = self.get_path_completion(self.query)
+        completion = self.get_path_completion()
         if completion[-1] == ")":
             path = "self.openstack_sdk." + completion
         else:
