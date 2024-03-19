@@ -17,6 +17,9 @@ class ServerInterfaces:
 
         LOG.debug(f"Trying to fetch server '{server_id}' interfaces")
         response = self.sdk_conn.compute.server_interfaces(server_id)
+        if response is None:
+            raise Exception("Server not found")
+
         return json.dumps(list(response))
 
 
@@ -29,4 +32,7 @@ class ServerInterfaces:
 
         LOG.debug(f"Trying to find server '{server_id}' '{interface_id}' interface")
         response = self.sdk_conn.compute.get_server_interface(server_id, interface_id)
+        if response is None:
+            raise Exception("Server not found")
+
         return json.dumps(response)

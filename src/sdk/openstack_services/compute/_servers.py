@@ -13,7 +13,8 @@ class Servers:
 
     def list(self):
         LOG.debug("Trying to fetch servers")
-        response = self.sdk_conn.compute.servers()
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.compute.servers(details=False, all_projects=all_projects)
         return json.dumps(list(response))
 
 
@@ -22,7 +23,8 @@ class Servers:
             raise AttributeError("Required attribute 'server_id' was not defined")
 
         LOG.debug(f"Trying to find '{server_id}' server")
-        response = self.sdk_conn.compute.find_server(server_id)
+        all_projects = True if self.sdk_conn.auth["username"] == "admin" else False
+        response = self.sdk_conn.compute.find_server(server_id, details=False, all_projects=all_projects)
         if response is None:
             raise Exception("Server not found!")
 

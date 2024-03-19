@@ -91,3 +91,23 @@ class OpenstackSdk:
             if service["is_enabled"]:
                 active_services.append(service["name"])
         return active_services
+
+
+# Uncomment the lines below if you want to test
+# the OpenstackSDK only
+# if __name__ == "__main__":
+#     sdk = OpenstackSdk()
+#     print(sdk.NOVA.servers.list())
+#     print(sdk.NOVA.servers.show("vm2"))
+#     print(sdk.CINDERV3.volumes.list())
+#     print(sdk.CINDERV3.volumes.show("test-volume-1"))
+#     print(sdk.CINDERV3.backups.list())
+#     print(sdk.KEYSTONE.services.list())
+#     print(sdk.KEYSTONE.services.show("cinderv3"))
+#     print(sdk.NEUTRON.routers.list())
+#     print(sdk.NEUTRON.routers.show("demo-router"))
+#     print(sdk.NOVA.hypervisors.list())
+#     print(sdk.NOVA.hypervisors.show("openstack"))
+#     print(sdk.NOVA.services.list())
+#     print(sdk.NEUTRON.agents.list())
+#     print(sdk.NOVA.hypervisors.list())
